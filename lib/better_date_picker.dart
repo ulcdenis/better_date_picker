@@ -190,10 +190,12 @@ class _BetterDatePickerState extends State<BetterDatePicker> {
               ),
             ],
           ),
-          Container(
-            width: 500,
-            height: 60,
-            decoration: BoxDecoration(color: Colors.white.withOpacity(0.15), borderRadius: BorderRadius.circular(10)),
+          IgnorePointer(
+            child: Container(
+              width: 500,
+              height: 60,
+              decoration: BoxDecoration(color: Colors.white.withOpacity(0.15), borderRadius: BorderRadius.circular(10)),
+            ),
           ),
         ],
       ),
