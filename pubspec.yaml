@@ -1,7 +1,7 @@
 name: better_date_picker
 description: "Customizable date picker using wheel chooser."
-version: 0.1.0
-homepage: https://github.com/ulcdenis/better_date_picker
+version: 0.1.1
+homepage: https://github.com/ulcdenis/better_date_picker.git
 
 environment:
   sdk: '>=3.2.3 <4.0.0'
