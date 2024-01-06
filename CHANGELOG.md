@@ -1,3 +1,3 @@
-## 0.0.1
+## [0.1.0] - 2024-01-06
 
-* TODO: Describe initial release.
+* First version with basic date picker using wheel chooser. Allow setting dates in this formats: day format, month format and year format.
