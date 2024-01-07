@@ -18,12 +18,12 @@ class BetterWheelChooser extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 140,
+      width: 100,
       child: ListWheelScrollView.useDelegate(
         controller: controller,
         itemExtent: 50,
         perspective: 0.005,
-        diameterRatio: 1.2,
+        diameterRatio: 1.5,
         physics: const FixedExtentScrollPhysics(),
         childDelegate: ListWheelChildBuilderDelegate(
           childCount: itemCount ?? items.length,

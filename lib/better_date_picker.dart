@@ -15,6 +15,7 @@ class BetterDatePicker extends StatefulWidget {
   final Color? selectorColor;
   final BorderRadiusGeometry? selectorBorderRadius;
   final Border? selectorBorder;
+  final double spaceBetween;
   const BetterDatePicker({
     super.key,
     required this.initialDate,
@@ -26,6 +27,7 @@ class BetterDatePicker extends StatefulWidget {
     this.selectorColor,
     this.selectorBorderRadius,
     this.selectorBorder,
+    this.spaceBetween = 20,
   });
 
   @override
@@ -180,12 +182,13 @@ class _BetterDatePickerState extends State<BetterDatePicker> {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 500,
+      width: double.infinity,
       child: Stack(
         alignment: Alignment.center,
         children: [
           if (!widget.hideSelector)
             Container(
-              width: 500,
+              width: double.infinity,
               height: 60,
               decoration: BoxDecoration(
                 color: widget.selectorColor ?? Colors.black.withOpacity(0.15),
@@ -204,6 +207,7 @@ class _BetterDatePickerState extends State<BetterDatePicker> {
                   textColor: widget.textColor ?? Colors.black54,
                   selectedTextColor: widget.selectedTextColor ?? Colors.black,
                 ),
+              SizedBox(width: widget.spaceBetween),
               if (widget.selectionType != SelectionType.year)
                 BetterWheelChooser(
                   controller: _monthController,
@@ -211,6 +215,7 @@ class _BetterDatePickerState extends State<BetterDatePicker> {
                   textColor: widget.textColor ?? Colors.black54,
                   selectedTextColor: widget.selectedTextColor ?? Colors.black,
                 ),
+              SizedBox(width: widget.spaceBetween),
               BetterWheelChooser(
                 controller: _yearController,
                 items: years,
