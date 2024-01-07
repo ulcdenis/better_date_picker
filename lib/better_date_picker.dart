@@ -9,10 +9,10 @@ class BetterDatePicker extends StatefulWidget {
   final DateTime initialDate;
   final void Function(DateTime selectedDate) dateSelect;
   final SelectionType selectionType;
-  final Color? textColor;
-  final Color? selectedTextColor;
+  final Color textColor;
+  final Color selectedTextColor;
   final bool hideSelector;
-  final Color? selectorColor;
+  final Color selectorColor;
   final BorderRadiusGeometry? selectorBorderRadius;
   final Border? selectorBorder;
   final double spaceBetween;
@@ -21,10 +21,10 @@ class BetterDatePicker extends StatefulWidget {
     required this.initialDate,
     required this.dateSelect,
     this.selectionType = SelectionType.day,
-    this.textColor,
-    this.selectedTextColor,
+    this.textColor = Colors.black54,
+    this.selectedTextColor = Colors.black,
     this.hideSelector = false,
-    this.selectorColor,
+    this.selectorColor = const Color(0x26000000),
     this.selectorBorderRadius,
     this.selectorBorder,
     this.spaceBetween = 20,
@@ -191,7 +191,7 @@ class _BetterDatePickerState extends State<BetterDatePicker> {
               width: double.infinity,
               height: 60,
               decoration: BoxDecoration(
-                color: widget.selectorColor ?? Colors.black.withOpacity(0.15),
+                color: widget.selectorColor,
                 borderRadius: widget.selectorBorderRadius ?? BorderRadius.circular(10),
                 border: widget.selectorBorder,
               ),
@@ -204,23 +204,23 @@ class _BetterDatePickerState extends State<BetterDatePicker> {
                   controller: _dayController,
                   items: days,
                   itemCount: daysLength,
-                  textColor: widget.textColor ?? Colors.black54,
-                  selectedTextColor: widget.selectedTextColor ?? Colors.black,
+                  textColor: widget.textColor,
+                  selectedTextColor: widget.selectedTextColor,
                 ),
               SizedBox(width: widget.spaceBetween),
               if (widget.selectionType != SelectionType.year)
                 BetterWheelChooser(
                   controller: _monthController,
                   items: months,
-                  textColor: widget.textColor ?? Colors.black54,
-                  selectedTextColor: widget.selectedTextColor ?? Colors.black,
+                  textColor: widget.textColor,
+                  selectedTextColor: widget.selectedTextColor,
                 ),
               SizedBox(width: widget.spaceBetween),
               BetterWheelChooser(
                 controller: _yearController,
                 items: years,
-                textColor: widget.textColor ?? Colors.black54,
-                selectedTextColor: widget.selectedTextColor ?? Colors.black,
+                textColor: widget.textColor,
+                selectedTextColor: widget.selectedTextColor,
               ),
             ],
           ),
