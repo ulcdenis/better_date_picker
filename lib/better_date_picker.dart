@@ -1,5 +1,6 @@
 library better_date_picker;
 
+import 'package:better_date_picker/better_wheel_chooser.dart';
 import 'package:flutter/material.dart';
 
 enum SelectionType { day, month, year }
@@ -8,11 +9,23 @@ class BetterDatePicker extends StatefulWidget {
   final DateTime initialDate;
   final void Function(DateTime selectedDate) dateSelect;
   final SelectionType selectionType;
+  final Color? textColor;
+  final Color? selectedTextColor;
+  final bool hideSelector;
+  final Color? selectorColor;
+  final BorderRadiusGeometry? selectorBorderRadius;
+  final Border? selectorBorder;
   const BetterDatePicker({
     super.key,
     required this.initialDate,
     required this.dateSelect,
     this.selectionType = SelectionType.day,
+    this.textColor,
+    this.selectedTextColor,
+    this.hideSelector = false,
+    this.selectorColor,
+    this.selectorBorderRadius,
+    this.selectorBorder,
   });
 
   @override
@@ -170,78 +183,43 @@ class _BetterDatePickerState extends State<BetterDatePicker> {
       child: Stack(
         alignment: Alignment.center,
         children: [
+          if (!widget.hideSelector)
+            Container(
+              width: 500,
+              height: 60,
+              decoration: BoxDecoration(
+                color: widget.selectorColor ?? Colors.black.withOpacity(0.15),
+                borderRadius: widget.selectorBorderRadius ?? BorderRadius.circular(10),
+                border: widget.selectorBorder,
+              ),
+            ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (widget.selectionType == SelectionType.day)
-                WheelChooser(
+                BetterWheelChooser(
                   controller: _dayController,
                   items: days,
                   itemCount: daysLength,
+                  textColor: widget.textColor ?? Colors.black54,
+                  selectedTextColor: widget.selectedTextColor ?? Colors.black,
                 ),
               if (widget.selectionType != SelectionType.year)
-                WheelChooser(
+                BetterWheelChooser(
                   controller: _monthController,
                   items: months,
+                  textColor: widget.textColor ?? Colors.black54,
+                  selectedTextColor: widget.selectedTextColor ?? Colors.black,
                 ),
-              WheelChooser(
+              BetterWheelChooser(
                 controller: _yearController,
                 items: years,
+                textColor: widget.textColor ?? Colors.black54,
+                selectedTextColor: widget.selectedTextColor ?? Colors.black,
               ),
             ],
           ),
-          IgnorePointer(
-            child: Container(
-              width: 500,
-              height: 60,
-              decoration: BoxDecoration(color: Colors.white.withOpacity(0.15), borderRadius: BorderRadius.circular(10)),
-            ),
-          ),
         ],
-      ),
-    );
-  }
-}
-
-class WheelChooser extends StatelessWidget {
-  final FixedExtentScrollController controller;
-  final List<int> items;
-  final int? itemCount;
-  const WheelChooser({
-    super.key,
-    required this.controller,
-    required this.items,
-    this.itemCount,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 140,
-      child: ListWheelScrollView.useDelegate(
-        controller: controller,
-        itemExtent: 50,
-        perspective: 0.005,
-        diameterRatio: 1.2,
-        physics: const FixedExtentScrollPhysics(),
-        childDelegate: ListWheelChildBuilderDelegate(
-          childCount: itemCount ?? items.length,
-          builder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5.0),
-              child: Center(
-                child: Text(
-                  items[index].toString(),
-                  style: const TextStyle(
-                    fontSize: 40,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
       ),
     );
   }
