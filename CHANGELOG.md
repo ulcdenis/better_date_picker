@@ -9,3 +9,7 @@
 ## [0.2.0] - 2024-01-08
 
 * Added parameters for content and style customization.
+
+## [0.2.1] - 2024-01-08
+
+* Removed test.
