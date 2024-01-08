@@ -18,20 +18,23 @@ class BetterDatePicker extends StatefulWidget {
   final double spaceBetween;
   final bool showWords;
   final SeparatorType separatorType;
-  const BetterDatePicker(
-      {super.key,
-      required this.initialDate,
-      required this.dateSelect,
-      this.selectionType = SelectionType.day,
-      this.textColor = Colors.black54,
-      this.selectedTextColor = Colors.black,
-      this.hideSelector = false,
-      this.selectorColor = const Color(0x26000000),
-      this.selectorBorderRadius,
-      this.selectorBorder,
-      this.spaceBetween = 0,
-      this.showWords = false,
-      this.separatorType = SeparatorType.none});
+  final double size;
+  const BetterDatePicker({
+    super.key,
+    required this.initialDate,
+    required this.dateSelect,
+    this.selectionType = SelectionType.day,
+    this.textColor = Colors.black54,
+    this.selectedTextColor = Colors.black,
+    this.hideSelector = false,
+    this.selectorColor = const Color(0x26000000),
+    this.selectorBorderRadius,
+    this.selectorBorder,
+    this.spaceBetween = 0,
+    this.showWords = false,
+    this.separatorType = SeparatorType.none,
+    this.size = 1,
+  });
 
   @override
   State<BetterDatePicker> createState() => _BetterDatePickerState();
@@ -206,7 +209,7 @@ class _BetterDatePickerState extends State<BetterDatePicker> {
           if (!widget.hideSelector)
             Container(
               width: double.infinity,
-              height: 60,
+              height: 60 * widget.size,
               decoration: BoxDecoration(
                 color: widget.selectorColor,
                 borderRadius: widget.selectorBorderRadius ?? BorderRadius.circular(10),
@@ -225,6 +228,7 @@ class _BetterDatePickerState extends State<BetterDatePicker> {
                   selectedTextColor: widget.selectedTextColor,
                   showDot: widget.separatorType == SeparatorType.comma,
                   selectionType: SelectionType.day,
+                  size: widget.size,
                 ),
               SizedBox(width: widget.spaceBetween),
               if (widget.selectionType != SelectionType.year)
@@ -237,6 +241,7 @@ class _BetterDatePickerState extends State<BetterDatePicker> {
                   showDot: widget.separatorType == SeparatorType.comma,
                   selectionType: SelectionType.month,
                   words: monthsWords,
+                  size: widget.size,
                 ),
               SizedBox(width: widget.spaceBetween),
               BetterWheelChooser(
@@ -246,6 +251,7 @@ class _BetterDatePickerState extends State<BetterDatePicker> {
                 selectedTextColor: widget.selectedTextColor,
                 showDot: widget.separatorType == SeparatorType.comma,
                 selectionType: SelectionType.year,
+                size: widget.size,
               ),
             ],
           ),

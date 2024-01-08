@@ -11,6 +11,7 @@ class BetterWheelChooser extends StatelessWidget {
   final List<String> words;
   final bool showDot;
   final SelectionType selectionType;
+  final double size;
   const BetterWheelChooser({
     super.key,
     required this.controller,
@@ -22,17 +23,18 @@ class BetterWheelChooser extends StatelessWidget {
     this.words = const [],
     required this.showDot,
     required this.selectionType,
+    required this.size,
   });
 
   @override
   Widget build(BuildContext context) {
     double getWidth() {
       if (selectionType == SelectionType.year) {
-        return 100;
+        return 100 * size;
       } else if (selectionType == SelectionType.month && showWords) {
-        return 200;
+        return 200 * size;
       } else {
-        return 60;
+        return 60 * size;
       }
     }
 
@@ -63,7 +65,7 @@ class BetterWheelChooser extends StatelessWidget {
                 child: Text(
                   getText(index),
                   style: TextStyle(
-                    fontSize: 40,
+                    fontSize: 40 * size,
                     color: controller.selectedItem == index ? selectedTextColor : textColor, //textColor,
                     fontWeight: FontWeight.bold,
                   ),
