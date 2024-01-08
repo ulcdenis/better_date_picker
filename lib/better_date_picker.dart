@@ -1,9 +1,9 @@
-library better_date_picker;
-
 import 'package:better_date_picker/better_wheel_chooser.dart';
 import 'package:flutter/material.dart';
 
 enum SelectionType { day, month, year }
+
+enum SeparatorType { none, comma }
 
 class BetterDatePicker extends StatefulWidget {
   final DateTime initialDate;
@@ -16,19 +16,22 @@ class BetterDatePicker extends StatefulWidget {
   final BorderRadiusGeometry? selectorBorderRadius;
   final Border? selectorBorder;
   final double spaceBetween;
-  const BetterDatePicker({
-    super.key,
-    required this.initialDate,
-    required this.dateSelect,
-    this.selectionType = SelectionType.day,
-    this.textColor = Colors.black54,
-    this.selectedTextColor = Colors.black,
-    this.hideSelector = false,
-    this.selectorColor = const Color(0x26000000),
-    this.selectorBorderRadius,
-    this.selectorBorder,
-    this.spaceBetween = 20,
-  });
+  final bool showWords;
+  final SeparatorType separatorType;
+  const BetterDatePicker(
+      {super.key,
+      required this.initialDate,
+      required this.dateSelect,
+      this.selectionType = SelectionType.day,
+      this.textColor = Colors.black54,
+      this.selectedTextColor = Colors.black,
+      this.hideSelector = false,
+      this.selectorColor = const Color(0x26000000),
+      this.selectorBorderRadius,
+      this.selectorBorder,
+      this.spaceBetween = 0,
+      this.showWords = false,
+      this.separatorType = SeparatorType.none});
 
   @override
   State<BetterDatePicker> createState() => _BetterDatePickerState();
@@ -76,6 +79,20 @@ class _BetterDatePickerState extends State<BetterDatePicker> {
   ];
   final List<int> months = const [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   List<int> years = const [];
+  List<String> monthsWords = const [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
 
   final List<int> shortMonths = const [4, 6, 9, 11];
 
@@ -206,6 +223,8 @@ class _BetterDatePickerState extends State<BetterDatePicker> {
                   itemCount: daysLength,
                   textColor: widget.textColor,
                   selectedTextColor: widget.selectedTextColor,
+                  showDot: widget.separatorType == SeparatorType.comma,
+                  selectionType: SelectionType.day,
                 ),
               SizedBox(width: widget.spaceBetween),
               if (widget.selectionType != SelectionType.year)
@@ -214,6 +233,10 @@ class _BetterDatePickerState extends State<BetterDatePicker> {
                   items: months,
                   textColor: widget.textColor,
                   selectedTextColor: widget.selectedTextColor,
+                  showWords: widget.showWords,
+                  showDot: widget.separatorType == SeparatorType.comma,
+                  selectionType: SelectionType.month,
+                  words: monthsWords,
                 ),
               SizedBox(width: widget.spaceBetween),
               BetterWheelChooser(
@@ -221,6 +244,8 @@ class _BetterDatePickerState extends State<BetterDatePicker> {
                 items: years,
                 textColor: widget.textColor,
                 selectedTextColor: widget.selectedTextColor,
+                showDot: widget.separatorType == SeparatorType.comma,
+                selectionType: SelectionType.year,
               ),
             ],
           ),
