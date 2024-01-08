@@ -1,18 +1,39 @@
-library better_date_picker;
-
+import 'package:better_date_picker/better_wheel_chooser.dart';
 import 'package:flutter/material.dart';
 
 enum SelectionType { day, month, year }
+
+enum SeparatorType { none, comma }
 
 class BetterDatePicker extends StatefulWidget {
   final DateTime initialDate;
   final void Function(DateTime selectedDate) dateSelect;
   final SelectionType selectionType;
+  final Color textColor;
+  final Color selectedTextColor;
+  final bool hideSelector;
+  final Color selectorColor;
+  final BorderRadiusGeometry? selectorBorderRadius;
+  final Border? selectorBorder;
+  final double spaceBetween;
+  final bool showWords;
+  final SeparatorType separatorType;
+  final double size;
   const BetterDatePicker({
     super.key,
     required this.initialDate,
     required this.dateSelect,
     this.selectionType = SelectionType.day,
+    this.textColor = Colors.black54,
+    this.selectedTextColor = Colors.black,
+    this.hideSelector = false,
+    this.selectorColor = const Color(0x26000000),
+    this.selectorBorderRadius,
+    this.selectorBorder,
+    this.spaceBetween = 0,
+    this.showWords = false,
+    this.separatorType = SeparatorType.none,
+    this.size = 1,
   });
 
   @override
@@ -61,6 +82,20 @@ class _BetterDatePickerState extends State<BetterDatePicker> {
   ];
   final List<int> months = const [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   List<int> years = const [];
+  List<String> monthsWords = const [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
 
   final List<int> shortMonths = const [4, 6, 9, 11];
 
@@ -167,79 +202,60 @@ class _BetterDatePickerState extends State<BetterDatePicker> {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 500,
+      width: double.infinity,
       child: Stack(
         alignment: Alignment.center,
         children: [
+          if (!widget.hideSelector)
+            Container(
+              width: double.infinity,
+              height: 60 * widget.size,
+              decoration: BoxDecoration(
+                color: widget.selectorColor,
+                borderRadius: widget.selectorBorderRadius ?? BorderRadius.circular(10),
+                border: widget.selectorBorder,
+              ),
+            ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (widget.selectionType == SelectionType.day)
-                WheelChooser(
+                BetterWheelChooser(
                   controller: _dayController,
                   items: days,
                   itemCount: daysLength,
+                  textColor: widget.textColor,
+                  selectedTextColor: widget.selectedTextColor,
+                  showDot: widget.separatorType == SeparatorType.comma,
+                  selectionType: SelectionType.day,
+                  size: widget.size,
                 ),
+              SizedBox(width: widget.spaceBetween),
               if (widget.selectionType != SelectionType.year)
-                WheelChooser(
+                BetterWheelChooser(
                   controller: _monthController,
                   items: months,
+                  textColor: widget.textColor,
+                  selectedTextColor: widget.selectedTextColor,
+                  showWords: widget.showWords,
+                  showDot: widget.separatorType == SeparatorType.comma,
+                  selectionType: SelectionType.month,
+                  words: monthsWords,
+                  size: widget.size,
                 ),
-              WheelChooser(
+              SizedBox(width: widget.spaceBetween),
+              BetterWheelChooser(
                 controller: _yearController,
                 items: years,
+                textColor: widget.textColor,
+                selectedTextColor: widget.selectedTextColor,
+                showDot: widget.separatorType == SeparatorType.comma,
+                selectionType: SelectionType.year,
+                size: widget.size,
               ),
             ],
           ),
-          Container(
-            width: 500,
-            height: 60,
-            decoration: BoxDecoration(color: Colors.white.withOpacity(0.15), borderRadius: BorderRadius.circular(10)),
-          ),
         ],
-      ),
-    );
-  }
-}
-
-class WheelChooser extends StatelessWidget {
-  final FixedExtentScrollController controller;
-  final List<int> items;
-  final int? itemCount;
-  const WheelChooser({
-    super.key,
-    required this.controller,
-    required this.items,
-    this.itemCount,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 140,
-      child: ListWheelScrollView.useDelegate(
-        controller: controller,
-        itemExtent: 50,
-        perspective: 0.005,
-        diameterRatio: 1.2,
-        physics: const FixedExtentScrollPhysics(),
-        childDelegate: ListWheelChildBuilderDelegate(
-          childCount: itemCount ?? items.length,
-          builder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5.0),
-              child: Center(
-                child: Text(
-                  items[index].toString(),
-                  style: const TextStyle(
-                    fontSize: 40,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
       ),
     );
   }
