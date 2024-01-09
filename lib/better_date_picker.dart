@@ -158,6 +158,14 @@ class _BetterDatePickerState extends State<BetterDatePicker> {
     });
   }
 
+  @override
+  void dispose() {
+    _dayController.dispose();
+    _monthController.dispose();
+    _yearController.dispose();
+    super.dispose();
+  }
+
   void setDayLength() {
     setState(() {
       if (months[_monthController.selectedItem] == 2) {
